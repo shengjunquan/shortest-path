@@ -28,6 +28,8 @@ Open JShell.
 
 Run a shortest path query.
 
+`[shortest-path.pgql](./pgql/shortest-path.pgql)`
+
     graph.queryPgql(
       " SELECT a.name AS a, b.name AS b, COUNT(e) AS path_length, SUM(e.cost) AS total_cost, ARRAY_AGG(n.name) AS nodes "
     + " FROM MATCH TOP 3 SHORTEST ( (a) (-[e]->(n))* (b) ) "
@@ -43,6 +45,8 @@ Run a shortest path query.
     +-------------------------------------------------+
 
 Run a cheapest path query.
+
+`[cheapest-path.pgql](./pgql/cheapest-path.pgql)`
 
     graph.queryPgql(
       " SELECT a.name AS a, b.name AS b, COUNT(e) AS path_length, SUM(e.cost) AS total_cost, ARRAY_AGG(n.name) AS nodes "

@@ -1,0 +1,10 @@
+SELECT
+  a.name AS a
+, b.name AS b
+, COUNT(e) AS path_length
+, SUM(e.cost) AS total_cost
+, ARRAY_AGG(n.name) AS nodes
+, ARRAY_AGG(ID(e)) AS edges
+FROM MATCH TOP 3 CHEAPEST ( (a) (-[e]->(n) COST e.cost)* (b) )
+WHERE a.name = 'A'
+  AND b.name = 'H'
