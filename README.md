@@ -4,7 +4,12 @@ Try graph queries in 5 min.
 
 ![](./graph.png)
 
-## Setup
+- [Using Graph Server](#Using-Graph-Server) with Database
+- [Using Graph Studio](#Using-Graph-Studio) of Autonomous Database
+
+## Using Graph Server
+
+### Setup
 
 Install JDK 11 on your Linux.
 
@@ -12,7 +17,7 @@ Download [Oracle Graph Server](https://www.oracle.com/database/technologies/spat
 
 Install Oracle Graph Server.
 
-## Try graph queries
+### Try graph queries
 
 Locate graph dataset files.
 
@@ -66,7 +71,7 @@ Exit JShell.
 
     /exit
 
-## Using Graph Viz
+### Using Graph Viz
 
 Graph Viz can also return the result as a table.
 
@@ -92,8 +97,6 @@ To show the intermediate nodes, visualize the list of edges.
 
 ![](./img/screen03.jpg)
 
-## Using Algorithm API
+## Using Graph Studio
 
-src = graph.getVertex(128);
-
-
+(TBD)
