@@ -100,3 +100,21 @@ To show the intermediate nodes, visualize the list of edges.
 ## Using Graph Studio
 
 (TBD)
+routesource.csv
+
+NAME
+A
+B
+C
+D
+E
+F
+G
+H
+
+Run a cheapest path query. Graph Studio return the result as a table.
+
+%pgql-pgx
+SELECT a.name AS a, b.name AS b, COUNT(e) AS path_length, SUM(e.cost) AS total_cost, ARRAY_AGG(n.name) AS nodes, ARRAY_AGG(ID(e)) AS edges 
+FROM MATCH top 5 CHEAPEST ((a) (-[e]->(n) COST e.cost)*(b)) ON ROUTE01 
+WHERE a.name='A' AND b.name='H'
