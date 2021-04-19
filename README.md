@@ -103,6 +103,7 @@ Load data into ADW with route.csv and routesource.csv dataset files.
 
 route.csv
 
+```
 SNAME,DNAME,COST
 A,B,1
 A,D,6
@@ -118,3 +119,65 @@ F,E,3
 F,H,13
 G,E,2
 G,H,2
+```
+routesource.csv
+
+```
+NAME
+A
+B
+C
+D
+E
+F
+G
+H
+```
+Create Model with dataset files.
+![image](https://user-images.githubusercontent.com/82792908/115204324-f1a8c500-a12a-11eb-94b2-37db4540ac87.png)
+
+Generated PGQL statement.
+
+```
+CREATE PROPERTY GRAPH draft_1616572432113
+  VERTEX TABLES (
+    test01.routesource
+      KEY ( name )
+      PROPERTIES ( name )
+  )
+  EDGE TABLES (
+    test01.route
+      SOURCE KEY ( sname ) REFERENCES routesource
+      DESTINATION KEY ( dname ) REFERENCES routesource
+      PROPERTIES ( cost, dname, sname )
+  )
+```
+Load graph into an in-memory representation.
+![image](https://user-images.githubusercontent.com/82792908/115204380-01280e00-a12b-11eb-8854-4349f7c79555.png)
+![image](https://user-images.githubusercontent.com/82792908/115204414-0ab17600-a12b-11eb-91c2-06bf05143a6c.png)
+
+The job of "Load graph into an in-memory" is proceeded successfully.
+![image](https://user-images.githubusercontent.com/82792908/115204444-12711a80-a12b-11eb-896e-1bf30232d885.png)
+
+
+Run a shortest path query, Graph Studio return the result as a table.
+
+```
+%pgql-pgx
+SELECT a.name AS a, b.name AS b, COUNT(e) AS path_length, SUM(e.cost) AS total_cost, ARRAY_AGG(n.name) AS nodes
+FROM MATCH TOP 3 SHORTEST ((a)(-[e]->(n))*(b)) ON ROUTE01
+WHERE a.name='A' AND b.name='H'
+```
+![image](https://user-images.githubusercontent.com/82792908/115204490-20bf3680-a12b-11eb-8e50-4fb0ad946d62.png)
+
+
+Run a cheapest path query. Graph Studio return the result as a table.
+
+```
+%pgql-pgx
+SELECT a.name AS a, b.name AS b, COUNT(e) AS path_length, SUM(e.cost) AS total_cost, ARRAY_AGG(n.name) AS nodes, ARRAY_AGG(ID(e)) AS edges 
+FROM MATCH top 5 CHEAPEST ((a) (-[e]->(n) COST e.cost)*(b)) ON ROUTE01 
+WHERE a.name='A' AND b.name='H'
+```
+![image](https://user-images.githubusercontent.com/82792908/115204547-2ddc2580-a12b-11eb-84c6-beb6820efe0b.png)
+
