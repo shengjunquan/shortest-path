@@ -98,7 +98,23 @@ To show the intermediate nodes, visualize the list of edges.
 ![](./img/screen03.jpg)
 
 ## Using Graph Studio
-%pgql-pgx
-SELECT a.name AS a, b.name AS b, COUNT(e) AS path_length, SUM(e.cost) AS total_cost, ARRAY_AGG(n.name) AS nodes
-FROM MATCH TOP 3 SHORTEST ((a)(-[e]->(n))*(b)) ON ROUTE01
-WHERE a.name='A' AND b.name='H'
+Using Graph Studio
+Load data into ADW with route.csv and routesource.csv dataset files.
+
+route.csv
+
+SNAME,DNAME,COST
+A,B,1
+A,D,6
+B,C,5
+B,E,3
+C,E,1
+C,F,7
+D,B,2
+D,G,3
+E,D,1
+E,H,8
+F,E,3
+F,H,13
+G,E,2
+G,H,2
