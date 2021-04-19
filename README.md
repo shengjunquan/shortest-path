@@ -98,5 +98,7 @@ To show the intermediate nodes, visualize the list of edges.
 ![](./img/screen03.jpg)
 
 ## Using Graph Studio
-
-(TBD)
+%pgql-pgx
+SELECT a.name AS a, b.name AS b, COUNT(e) AS path_length, SUM(e.cost) AS total_cost, ARRAY_AGG(n.name) AS nodes
+FROM MATCH TOP 3 SHORTEST ((a)(-[e]->(n))*(b)) ON ROUTE01
+WHERE a.name='A' AND b.name='H'
